@@ -1,0 +1,32 @@
+# Framework para construir la API
+fastapi
+
+# Servidor ASGI para ejecutar FastAPI en producción
+uvicorn[standard]
+
+# ORM para interactuar con la base de datos PostgreSQL
+sqlalchemy
+psycopg2-binary
+
+# Para gestionar variables de entorno desde archivos .env
+python-dotenv
+
+# Cliente de Python para la extensión pgvector
+pgvector
+
+# --- DEPENDENCIAS DE SEGURIDAD Y VALIDACIÓN ---
+passlib[bcrypt]
+python-jose[cryptography]
+# NUEVA LÍNEA: Dependencia para la validación de emails con Pydantic
+email-validator
+
+# --- Dependencias de IA ---
+llama-index
+llama-index-vector-stores-postgres
+llama-index-llms-gemini
+llama-index-embeddings-huggingface
+sentence-transformers
+
+# --- Dependencias para la ingesta de documentos ---
+pypdf
+python-docx

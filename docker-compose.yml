@@ -1,0 +1,53 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: rag_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    container_name: rag_backend
+    command: sh -c "python ingest.py && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: rag_frontend
+    # --- CORRECCIÓN PERMANENTE ---
+    # init: true - Usa un proceso 'init' ligero dentro del contenedor
+    # para manejar mejor las señales de apagado y evitar procesos "zombie".
+    init: true
+    # stop_grace_period: 1s - Le dice a Docker que solo espere 1 segundo
+    # antes de forzar el apagado del contenedor, en lugar del
+    # largo timeout por defecto.
+    stop_grace_period: 1s
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

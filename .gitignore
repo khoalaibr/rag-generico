@@ -1,0 +1,10 @@
+# Archivos de entorno
+.env
+
+# Dependencias de Node.js
+/frontend/node_modules
+/backend/venv
+/backend/__pycache__
+
+# Archivos de sistema
+.DS_Store

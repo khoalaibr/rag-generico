@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de RAG por WebSocket</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; background: #f4f4f9; }
+        #messages { border: 1px solid #ccc; padding: 1em; margin-top: 1em; height: 300px; overflow-y: scroll; background: white; }
+        .msg { margin-bottom: 0.5em; padding: 0.5em; border-radius: 4px; }
+        .sent { background-color: #e1f5fe; text-align: right;}
+        .received { background-color: #fff9c4; }
+        .status { color: #888; font-style: italic; font-size: 0.9em;}
+    </style>
+</head>
+<body>
+    <h1>Prueba de RAG con Streaming</h1>
+    <p>Haz una pregunta sobre la "Ley de Mascotas Robóticas".</p>
+    <form id="form">
+        <input type="text" id="messageText" autocomplete="off" placeholder="Escribe tu pregunta..." style="width: 300px;"/>
+        <button>Enviar</button>
+    </form>
+    <h2>Log de Conexión:</h2>
+    <div id="messages"></div>
+
+    <script>
+        const form = document.getElementById('form');
+        const input = document.getElementById('messageText');
+        const messages = document.getElementById('messages');
+        let currentAssistantMessageElement = null;
+        
+        // --- Conexión al NUEVO WebSocket ---
+        const ws = new WebSocket("ws://localhost:8000/ws/rag_chat");
+
+        function addMessage(text, type, isStream = false) {
+            if (isStream) {
+                if (!currentAssistantMessageElement) {
+                    currentAssistantMessageElement = document.createElement('div');
+                    currentAssistantMessageElement.className = 'msg received';
+                    messages.appendChild(currentAssistantMessageElement);
+                }
+                currentAssistantMessageElement.textContent += text;
+            } else {
+                currentAssistantMessageElement = null; // Reiniciar para el proximo mensaje
+                const el = document.createElement('div');
+                el.textContent = text;
+                el.className = `msg ${type}`;
+                messages.appendChild(el);
+            }
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        ws.onopen = function(event) {
+            addMessage("¡Conectado al servidor RAG!", "status");
+        };
+
+        ws.onmessage = function(event) {
+            const token = event.data;
+            if (token === "[END_OF_STREAM]") {
+                currentAssistantMessageElement = null; // Mensaje completado
+            } else {
+                addMessage(token, "received", true);
+            }
+        };
+
+        ws.onclose = function(event) {
+            addMessage("Desconectado del servidor.", "status");
+        };
+
+        ws.onerror = function(error) {
+            addMessage("Error en la conexión WebSocket.", "status");
+        };
+
+        form.onsubmit = function(event) {
+            event.preventDefault();
+            const message = input.value;
+            if (message) {
+                ws.send(message);
+                addMessage(`Enviado: ${message}`, "sent");
+                input.value = '';
+            }
+        };
+    </script>
+</body>
+</html>

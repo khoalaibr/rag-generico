@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de WebSocket</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; background: #f4f4f9; }
+        #messages { border: 1px solid #ccc; padding: 1em; margin-top: 1em; height: 300px; overflow-y: scroll; background: white; }
+        .msg { margin-bottom: 0.5em; padding: 0.5em; border-radius: 4px; }
+        .sent { background-color: #e1f5fe; text-align: right;}
+        .received { background-color: #f1f8e9; }
+        .status { color: #888; font-style: italic; font-size: 0.9em;}
+    </style>
+</head>
+<body>
+    <h1>Prueba de WebSocket Echo</h1>
+    <form id="form">
+        <input type="text" id="messageText" autocomplete="off" placeholder="Escribe un mensaje..."/>
+        <button>Enviar</button>
+    </form>
+    <h2>Log de Conexión:</h2>
+    <div id="messages"></div>
+
+    <script>
+        const form = document.getElementById('form');
+        const input = document.getElementById('messageText');
+        const messages = document.getElementById('messages');
+        
+        // --- Conexión al WebSocket ---
+        const ws = new WebSocket("ws://localhost:8000/ws/echo");
+
+        function addMessage(text, type) {
+            const el = document.createElement('div');
+            el.textContent = text;
+            el.className = `msg ${type}`;
+            messages.appendChild(el);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        ws.onopen = function(event) {
+            addMessage("¡Conectado al servidor de WebSocket!", "status");
+        };
+
+        ws.onmessage = function(event) {
+            addMessage(event.data, "received");
+        };
+
+        ws.onclose = function(event) {
+            addMessage("Desconectado del servidor.", "status");
+        };
+
+        ws.onerror = function(error) {
+            addMessage("Error en la conexión WebSocket.", "status");
+            console.error("WebSocket Error:", error);
+        };
+
+        form.onsubmit = function(event) {
+            event.preventDefault();
+            const message = input.value;
+            if (message) {
+                ws.send(message);
+                addMessage(`Enviado: ${message}`, "sent");
+                input.value = '';
+            }
+        };
+    </script>
+</body>
+</html>

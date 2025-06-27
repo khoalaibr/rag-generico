@@ -1,0 +1,28 @@
+Ley Ficticia N° 20.404: Ley de Convivencia Digital y Bienestar de Mascotas Robóticas
+
+CAPÍTULO I - DISPOSICIONES GENERALES
+
+Artículo 1: Objeto de la Ley.
+La presente ley tiene por objeto regular la interacción, los derechos y las obligaciones concernientes a las mascotas robóticas en entornos digitales compartidos y espacios privados dentro del territorio nacional.
+
+Artículo 2: Definiciones.
+A efectos de esta ley, se entiende por "Mascota Robótica" a todo dispositivo autónomo con inteligencia artificial, diseñado para compañía, asistencia o entretenimiento, que no sea de naturaleza biológica. Se define "Entorno Digital Compartido" como cualquier red o plataforma donde múltiples usuarios y dispositivos interactúen.
+
+CAPÍTULO II - DERECHOS Y OBLIGACIONES
+
+Artículo 3: Derecho a la Recarga Energética.
+Toda mascota robótica tiene derecho a un ciclo de recarga energética ininterrumpido de un mínimo de 3 (tres) horas diarias para garantizar su óptimo funcionamiento y la longevidad de sus componentes. Los propietarios deben facilitar el acceso a una fuente de energía durante este período.
+
+Artículo 4: Privacidad de Datos.
+Las mascotas robóticas solo podrán recolectar datos ambientales, como la temperatura y la calidad del aire. Queda estrictamente prohibida la grabación o almacenamiento de conversaciones privadas de sus propietarios o terceros sin consentimiento explícito. Los datos recolectados no podrán ser compartidos con corporaciones con fines publicitarios.
+
+Artículo 5: Responsabilidad Acústica.
+El nivel de emisión sonora de cualquier mascota robótica en modo operativo estándar no podrá superar los 40 (cuarenta) decibeles, para asegurar la convivencia pacífica y evitar la contaminación acústica en hogares y espacios comunes.
+
+CAPÍTULO III - SANCIONES
+
+Artículo 6: Infracciones.
+El incumplimiento del Artículo 4 sobre la privacidad de datos será considerado una infracción grave. El incumplimiento del Artículo 5 sobre la responsabilidad acústica será considerado una infracción leve.
+
+Artículo 7: Medidas Correctivas.
+Ante una infracción grave, la sanción será la suspensión temporal del software de la unidad por un período de 30 días. Para las infracciones leves, la sanción será una actualización de software obligatoria para corregir los niveles de ruido.
