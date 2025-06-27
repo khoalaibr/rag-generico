@@ -1,6 +1,8 @@
 # backend/app/users/models.py
 from sqlalchemy import Boolean, Column, Integer, String
-from app.database import Base
+# --- CORRECCIÓN DE IMPORTS ---
+# Usamos una ruta relativa para llegar al archivo database.py
+from ..database import Base
 
 class User(Base):
     __tablename__ = "users"
