@@ -1,6 +1,3 @@
--- Este script se ejecuta automáticamente la primera vez que el contenedor
--- de la base de datos se inicia.
-
 CREATE EXTENSION IF NOT EXISTS vector;
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 

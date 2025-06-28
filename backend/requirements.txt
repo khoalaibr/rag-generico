@@ -1,3 +1,5 @@
+# backend/requirements.txt
+
 # Framework para construir la API
 fastapi
 
@@ -17,8 +19,8 @@ pgvector
 # --- DEPENDENCIAS DE SEGURIDAD Y VALIDACIÓN ---
 passlib[bcrypt]
 python-jose[cryptography]
-# NUEVA LÍNEA: Dependencia para la validación de emails con Pydantic
 email-validator
+python-multipart # <-- DEPENDENCIA CRÍTICA AÑADIDA
 
 # --- Dependencias de IA ---
 llama-index
