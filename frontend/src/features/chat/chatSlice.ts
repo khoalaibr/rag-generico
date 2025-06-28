@@ -25,6 +25,7 @@ const initialState: ChatState = {
 export const postQuery = createAsyncThunk(
   'chat/postQuery',
   async (question: string) => {
+    // Apunta al endpoint RAG. Podríamos crear otro thunk para el endpoint general.
     const response = await apiClient.post('/rag/query', { question });
     return response.data.answer;
   }

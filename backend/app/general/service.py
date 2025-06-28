@@ -15,8 +15,9 @@ class GeneralPurposeService:
         logger.info("GeneralPurposeService inicializado.")
 
     def get_llm_response(self, prompt: str) -> str:
-        logger.info(f"Enviando prompt al LLM: '{prompt[:80]}...'")
-        response = self.llm.complete(prompt)
+        final_prompt = f"Responde a la siguiente instrucción en español, de forma útil y creativa.\n\nInstrucción: \"{prompt}\""
+        logger.info(f"Enviando prompt al LLM: '{final_prompt[:80]}...'")
+        response = self.llm.complete(final_prompt)
         return response.text
 
 general_service = GeneralPurposeService()

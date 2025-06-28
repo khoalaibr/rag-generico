@@ -1,10 +1,8 @@
 # backend/app/rag/service.py
 import os
 import logging
-import json
 from sqlalchemy import create_engine, text
 from llama_index.core import PromptTemplate, Settings as LlamaSettings, get_response_synthesizer
-# --- CORRECCIÓN --- Se importa NodeWithScore para usarlo explícitamente
 from llama_index.core.schema import NodeWithScore, TextNode
 from llama_index.core.embeddings import resolve_embed_model
 from llama_index.llms.gemini import Gemini
@@ -29,12 +27,9 @@ class RAGService:
     def __init__(self):
         logger.info("Inicializando RAGService...")
         os.environ["GOOGLE_API_KEY"] = settings.GEMINI_API_KEY
-        
         self.embed_model = resolve_embed_model("local:sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
         self.llm = Gemini(model_name="models/gemini-1.5-flash-latest")
-        
         LlamaSettings.embed_model = self.embed_model
-        
         self.db_engine = create_engine(settings.DATABASE_URL)
         logger.info("RAGService inicializado.")
 
@@ -44,27 +39,18 @@ class RAGService:
             query_embedding = self.embed_model.get_text_embedding(question)
             sql_query = text("""
                 SELECT id, text, embedding <-> :query_embedding AS distance
-                FROM document_vectors
-                ORDER BY distance ASC LIMIT 3;
+                FROM document_vectors ORDER BY distance ASC LIMIT 3
             """)
-            
             source_nodes = []
             with self.db_engine.connect() as connection:
                 result = connection.execute(sql_query, {"query_embedding": str(list(query_embedding))})
                 for row in result:
-                    row_data = row._mapping
-                    # --- CORRECCIÓN FINAL Y DEFINITIVA ---
-                    # 1. Creamos el TextNode con el contenido del documento.
-                    node = TextNode(id_=row_data['id'], text=row_data['text'])
-                    # 2. Envolvemos el nodo en un objeto NodeWithScore, que es lo que el
-                    #    sintetizador espera. Esto resuelve el AttributeError.
-                    source_nodes.append(NodeWithScore(node=node, score=(1.0 - row_data['distance'])))
+                    node = TextNode(id_=row._mapping['id'], text=row._mapping['text'])
+                    source_nodes.append(NodeWithScore(node=node, score=(1.0 - row._mapping['distance'])))
             
             if source_nodes:
                 logger.info(f"Nodos recuperados: {len(source_nodes)}")
-                response_synthesizer = get_response_synthesizer(
-                    llm=self.llm, text_qa_template=SPANISH_QA_TEMPLATE
-                )
+                response_synthesizer = get_response_synthesizer(llm=self.llm, text_qa_template=SPANISH_QA_TEMPLATE)
                 response = response_synthesizer.synthesize(question, source_nodes)
                 return response.response
             else:
