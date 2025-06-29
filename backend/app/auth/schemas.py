@@ -1,4 +1,3 @@
-# backend/app/auth/schemas.py
 from pydantic import BaseModel, EmailStr, ConfigDict
 
 
@@ -23,4 +22,5 @@ class User(UserBase):
     id: int
     is_active: bool
     role: str
+
     model_config = ConfigDict(from_attributes=True)

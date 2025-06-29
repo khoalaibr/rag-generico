@@ -17,8 +17,8 @@ pgvector
 # --- DEPENDENCIAS DE SEGURIDAD Y VALIDACIÓN ---
 passlib[bcrypt]
 python-jose[cryptography]
-# NUEVA LÍNEA: Dependencia para la validación de emails con Pydantic
 email-validator
+python-multipart
 
 # --- Dependencias de IA ---
 llama-index

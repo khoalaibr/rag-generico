@@ -9,8 +9,8 @@ from .auth.router import router as auth_router
 
 app = FastAPI(
     title="Asesor IA - Backend",
-    description="API con RAG, IA General y Autenticación.",
-    version="1.1.0",
+    description="API para el sistema RAG de IA Genérica y tareas generales.",
+    version="1.0.0"  # Versión Estable
 )
 
 # Configuración de CORS

@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS document_vectors (
     metadata_ JSONB
 );
 
--- --- NUEVA TABLA PARA USUARIOS ---
+-- Tabla de usuarios
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
